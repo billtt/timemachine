@@ -1,0 +1,73 @@
+
+	<% include top %>
+
+	<script type="text/javascript" src="javascripts/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="javascripts/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="javascripts/sprintf.min.js"></script>
+    <script type="text/javascript" src="javascripts/types.js"></script>
+    <script type="text/javascript" src="javascripts/slice.js"></script>
+	<link rel="stylesheet" type="text/css" href="stylesheets/jquery-ui-1.10.3.custom.css"/>
+
+    <!-- timeline -->
+    <% include timeline %>
+
+    <div style="width:800px; margin-top:10px;" class="addSlice">
+        <!-- add time slice start -->
+        <form action="add" method="post">
+            <nobr>
+                <input type="text" name="content" id="inpContent" placeholder="Type content here to add" style="width:470px"/>
+                <input type="text" name="date" placeholder="date" style="width:100px;" id="inpDate"/>
+                <input type="text" name="time" placeholder="time" style="width:60px;"/>
+                <input type="text" name="type" placeholder="type" autocomplete="off" style="width:100px; text-align:center; cursor:pointer;"
+                       id="inpType" readonly="true"/>
+                <input type="submit" value="Add" style="cursor:pointer; height:29px; color:#bbbbbb;"/>
+            </nobr>
+        </form>
+        <div id="typeBox" style="display:none; width:105px;">
+            <% types.forEach(function(type, index) { %>
+                <li><%= type %></li>
+            <% }); %>
+        </div>
+        <!-- add time slice finish -->
+    </div>
+
+	<!-- main area start -->
+    <div style="width:800px; text-align:left;">
+
+        <% if (locals.keyword) { %>
+        <p><strong>Search results for "<%=keyword%>"</strong></p>
+        <% } %>
+        <% if (slices.length==0) { %>
+        <p><strong>No slices.</strong></p>
+        <% } else { %>
+        <p style="color:gray;"><%=slices.length%> slices</p>
+        <% } %>
+
+        <div class="slice_block">
+            <% slices.forEach(function(slice, index) { %>
+            <div class="slice_<%- slice.type %>"></div>
+            <% }); %>
+        </div>
+
+        <table border="0" cellspacing="0" cellpadding="0" width="800" class="normaltext">
+        <tr><td colspan="2">
+            <!-- timeline blocks-->
+        </td></tr>
+        <tr height="20"><td colspan="2"></td></tr>
+        <% slices.forEach(function(slice, index) { %>
+        <tr title="<%- slice.type %>">
+            <td style="width:5px;" rowspan="2" class="slice_<%- slice.type %>" onclick="removeSlice('<%- slice.id %>');"></td>
+            <td class="slice_time"><%= slice.timeText() %></td>
+        </tr>
+        <tr title="<%= slice.type %>">
+            <td class="slice_content"><%= slice.content %></td>
+        </tr>
+        <tr height="10"><td colspan="2"></td></tr>
+        <% }); %>
+        </table>
+
+	<!-- main area finish -->
+    </div>
+
+	<% include bottom %>
+

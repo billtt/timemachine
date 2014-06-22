@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Time Machine</title>
+	<link href="stylesheets/time.css" rel="stylesheet" type="text/css">
+</head>
+<body class="normaltext" topmargin="0">
+
+<div id="topBar">
+    <div style="float:left; font-size:30px; padding:8px 0px 0px 20px; font-family:'Helvetica'; width:240px;">
+        <span style="font-size:30px;"><a href="home">Time Machine</a></span>
+        <span style="font-size:16px;">.js</span>
+    </div>
+    <div style="float:right; padding:10px 10px 0px 0px; text-align:right; width:240px;">
+        <% if (user!=null && slices!=null) { %>
+        Hi, <%=user.name%> | <a href="logout">Logout</a>
+        <form action="search" method="get">
+            <input type="text" name="key" style="width:170px" class="flatInput"/>
+        </form>
+    <% } %>
+    </div>
+    <% if (user) { %>
+    <div id="divNow">
+    </div>
+    <% } %>
+</div>
+
+<div id="content" style="margin-top: 70px; text-align:center;">

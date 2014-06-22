@@ -1,0 +1,36 @@
+
+<table border="0" cellspacing="1" cellpadding="2" class="nav" bgcolor="#eeeeee" width="800">
+<tr>
+	<td class="title">YEAR</td>
+	<td align="left" bgcolor="#FFFFFF">
+        <% for (var i=2007; i<=today.day.getFullYear(); i++) { %>
+		<a href="travel?period=month&year=<%=i%>&month=1"
+            <% if (day.yearSelected(i)) { %>class="selected"<% } %>>
+			<%=i%>
+		</a>
+        <% } %>
+	</td>
+</tr>
+<tr>
+	<td class="title">MONTH</td>
+	<td align="left" bgcolor="#FFFFFF">
+        <% for (var i=1; i<=12; i++) { %>
+			<a href="travel?period=month&year=<%=day.day.getFullYear()%>&month=<%=i%>"
+                <% if (day.monthSelected(i)) { %>class="selected"<% } %>>
+			    <%= i %>
+			</a>
+        <% } %>
+	</td>
+</tr>
+<tr>
+	<td class="title">DAY</td>
+	<td align="left" bgcolor="#FFFFFF">
+        <% for (var i=1; i<=day.maxDayOfMonth(); i++) { %>
+		<a href="travel?period=day&year=<%=day.day.getFullYear()%>&month=<%=day.day.getMonth()+1%>&day=<%=i%>"
+            <% if (day.daySelected(i)) { %>class="selected"<% } %>>
+				<%= i %>
+		</a>
+        <% } %>
+	</td>
+</tr>
+</table>

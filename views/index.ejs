@@ -1,0 +1,32 @@
+
+	<% include top %>
+
+    <% if (locals.error) { %>
+    <p class="errortext"><%= error %></p>
+    <% } %>
+    <% if (locals.info) { %>
+    <p><%= info %></p>
+    <% } %>
+
+    <div style="width:400px; margin-left:auto; margin-right:auto; font-family:'Monaco';">
+        <div style="float:left; width:200px;">
+            <h3>Login</h3>
+            <form action="login" method="post">
+                Name: <input type="text" name="name"/><br/>
+                Pass: <input type="password" name="password"/><br/>
+                <input type="submit" value="Go!"/>
+            </form>
+        </div>
+
+        <div style="float:left; width:200px;">
+            <h3>Register</h3>
+            <form action="reg" method="post">
+                Name: <input type="text" name="name"/><br/>
+                Pass: <input type="password" name="password"/><br/>
+                <input type="submit" value="Register"/>
+            </form>
+        </div>
+    </div>
+
+	<% include bottom %>
+
