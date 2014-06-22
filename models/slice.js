@@ -84,11 +84,21 @@ Slice.prototype.save = function save(callback) {
         mongodb.close();
         return callback(err);
       }
-      collection.ensureIndex('name', {safe: false});
-      collection.ensureIndex('time', {safe: false});
-      collection.insert(data, function(err, data) {
-        mongodb.close();
-        return callback(err, data);
+      collection.ensureIndex('name', {safe: false}, function(err) {
+        if (err) {
+          mongodb.close();
+          return callback(err);
+        }
+        collection.ensureIndex('time', {safe: false}, function(err) {
+          if (err) {
+            mongodb.close();
+            return callback(err);
+          }
+          collection.insert(data, function(err, data) {
+            mongodb.close();
+            return callback(err, data);
+          });
+        });
       });
     });
   });

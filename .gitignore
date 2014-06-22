@@ -1,1 +1,4 @@
 Thumbs.db
+node_modules
+.idea/runConfigurations
+workspace.xml

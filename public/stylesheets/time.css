@@ -198,52 +198,15 @@ a:active {
     margin: 2px 2px 0px 0px;
 }
 
-.slice_photography {
+.slice_work {
   background-color: #e8ef6e;
 }
-.slice_study {
+.slice_fun {
+    background-color: #79d550;
+}
+.slice_gym {
   background-color: #fb8b76;
 }
-.slice_accounting {
-  background-color: #a86efe;
-}
-.slice_manage {
+.slice_reading {
   background-color: #e965fe;
 }
-.slice_social {
-  background-color: #fed280;
-}
-.slice_discuss {
-  background-color: #c0ff5c;
-}
-.slice_tech {
-  background-color: #a65efe;
-}
-.slice_cook {
-    background-color: #fe595b;
-}
-.slice_work {
-  background-color: #444444;
-}
-.slice_academic {
-  background-color: #fe7ccf;
-}
-.slice_fun {
-  background-color: #79d550;
-}
-.slice_code {
-    background-color: #6455fe;
-}
-.slice_music {
-    background-color: #e9fe59;
-}
-.slice_design {
-  background-color: #feb555;
-}
-.slice_sport {
-  background-color: #e5dd42;
-}
-.slice_other {
-  background-color: #aaaaaa;
-}
-

@@ -29,10 +29,15 @@ User.prototype.save = function save(callback) {
         mongodb.close();
         return callback(err);
       }
-      collection.ensureIndex('name', {unique: true, safe: false});
-      collection.insert(data, {}, function (err, data) {
-        mongodb.close();
-        callback(err, data);
+      collection.ensureIndex('name', {unique: true, safe: false}, function(err) {
+        if (err) {
+          mongodb.close();
+          return callback(err);
+        }
+        collection.insert(data, {}, function (err, data) {
+          mongodb.close();
+          callback(err, data);
+        });
       });
     });
   });
