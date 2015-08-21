@@ -25,7 +25,7 @@ app.use(express.cookieParser());
 app.use(express.session({
   secret: settings.cookieSecret,
   store: new MongoStore({
-    db: settings.db
+    url: settings.dbUrl
   })
 }));
 app.use(flash());

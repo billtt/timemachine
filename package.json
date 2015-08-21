@@ -6,14 +6,15 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.4.0",
-    "ejs": "*",
-    "mongodb": ">= 0.9.9",
-    "connect-mongo": ">= 0.1.7",
+    "bson": "^0.4.11",
     "connect": ">= 1.8.5",
     "connect-flash": "*",
-    "node-uuid": "*",
+    "connect-mongo": ">= 0.1.7",
+    "ejs": "*",
+    "express": "3.4.0",
+    "mongodb": ">= 0.9.9",
     "mysql": "*",
+    "node-uuid": "*",
     "sprintf-js": "*"
   }
 }

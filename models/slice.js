@@ -8,6 +8,7 @@
 
 var mongodb = require('./db');
 var util = require('../util');
+var bson = require('bson');
 var uuid = require('node-uuid');
 
 function Slice(content, type, user, time, id) {
@@ -34,14 +35,14 @@ Slice.getList = function getList(user, year, month, day, period, callback) {
     }
     db.collection('slices', function(err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       var crit = { user: user };
       var timePeriod = util.getTimePeriod(year, month, day, period);
       crit.time = {$gte: timePeriod.start, $lt: timePeriod.end};
       collection.find(crit).toArray(function(err, docs) {
-        mongodb.close();
+        db.close();
         if (docs) {
           var list = [];
           docs.forEach(function(doc, index) {
@@ -81,21 +82,21 @@ Slice.prototype.save = function save(callback) {
     }
     db.collection('slices', function(err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       collection.ensureIndex('name', {safe: false}, function(err) {
         if (err) {
-          mongodb.close();
+          db.close();
           return callback(err);
         }
         collection.ensureIndex('time', {safe: false}, function(err) {
           if (err) {
-            mongodb.close();
+            db.close();
             return callback(err);
           }
           collection.insert(data, function(err, data) {
-            mongodb.close();
+            db.close();
             return callback(err, data);
           });
         });
@@ -111,13 +112,12 @@ Slice.remove = function remove(user, id, callback) {
     }
     db.collection('slices', function(err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
-      var mongo = require('mongodb');
-      var BSON = mongo.BSONPure;
+        var BSON = bson.BSONPure;
       collection.remove({user: user, _id: new BSON.ObjectID(id)}, function(err, num) {
-        mongodb.close();
+        db.close();
         return callback(err, num);
       });
     });
@@ -131,7 +131,7 @@ Slice.search = function search(user, keyword, callback) {
     }
     db.collection('slices', function(err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       if (keyword.length>0 && keyword.charAt(0)=='/') {
@@ -141,7 +141,7 @@ Slice.search = function search(user, keyword, callback) {
       }
       var crit = { user: user, content: new RegExp(keyword, 'i') };
       collection.find(crit).toArray(function(err, docs) {
-        mongodb.close();
+        db.close();
         if (docs) {
           var list = [];
           docs.forEach(function(doc, index) {

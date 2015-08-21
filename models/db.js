@@ -7,8 +7,8 @@
  */
 
 var settings = require('../settings');
-var Db = require('mongodb').Db;
-var Connection = require('mongodb').Connection;
-var Server = require('mongodb').Server;
+var MongoClient = require('mongodb').MongoClient;
 
-module.exports = new Db(settings.db, new Server(settings.host, Connection.DEFAULT_PORT, {}), {safe: true});
+exports.open = function(callback) {
+    MongoClient.connect(settings.dbUrl, callback);
+};

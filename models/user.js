@@ -26,16 +26,16 @@ User.prototype.save = function save(callback) {
     }
     db.collection('users', function (err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       collection.ensureIndex('name', {unique: true, safe: false}, function(err) {
         if (err) {
-          mongodb.close();
+          db.close();
           return callback(err);
         }
         collection.insert(data, {}, function (err, data) {
-          mongodb.close();
+          db.close();
           callback(err, data);
         });
       });
@@ -50,11 +50,11 @@ User.get = function get(name, callback) {
     }
     db.collection('users', function (err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       collection.findOne({name: name}, function (err, doc) {
-        mongodb.close();
+        db.close();
         if (doc) {
           var user = new User(doc.name, doc.key);
           callback(err, user);

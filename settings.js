@@ -8,8 +8,7 @@
 
 module.exports = {
   cookieSecret: 'time.js',
-  db: 'time',
-  host: 'localhost',
+  dbUrl: 'mongodb://localhost:27017/time',
   passwdKey: '.time.js',
   types: ['work', 'fun', 'gym', 'reading']
 };
