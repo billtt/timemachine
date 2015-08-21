@@ -10,5 +10,5 @@ module.exports = {
   cookieSecret: 'time.js',
   dbUrl: 'mongodb://localhost:27017/time',
   passwdKey: '.time.js',
-  types: ['work', 'fun', 'gym', 'reading']
+  types: ['work', 'fun', 'gym', 'reading', 'other']
 };

@@ -1,44 +1,45 @@
 
 	<% include top %>
 
-	<script type="text/javascript" src="javascripts/jquery-1.10.2.min.js"></script>
-	<script type="text/javascript" src="javascripts/jquery-ui-1.10.3.custom.min.js"></script>
-    <script type="text/javascript" src="javascripts/sprintf.min.js"></script>
-    <script type="text/javascript" src="javascripts/types.js"></script>
-    <script type="text/javascript" src="javascripts/slice.js"></script>
-	<link rel="stylesheet" type="text/css" href="stylesheets/jquery-ui-1.10.3.custom.css"/>
+    <script type="text/javascript" src="js/sprintf.min.js"></script>
+    <script type="text/javascript" src="js/types.js"></script>
+    <script type="text/javascript" src="js/slice.js"></script>
 
     <!-- timeline -->
     <% include timeline %>
 
-    <div style="width:800px; margin-top:10px;" class="addSlice">
+    <div>
         <!-- add time slice start -->
-        <form action="add" method="post">
+        <form action="add" method="post" class="form-inline">
             <nobr>
-                <input type="text" name="content" id="inpContent" placeholder="Type content here to add" style="width:470px"/>
-                <input type="text" name="date" placeholder="date" style="width:100px;" id="inpDate"/>
-                <input type="text" name="time" placeholder="time" style="width:60px;"/>
-                <input type="text" name="type" placeholder="type" autocomplete="off" style="width:100px; text-align:center; cursor:pointer;"
-                       id="inpType" readonly="true"/>
-                <input type="submit" value="Add" style="cursor:pointer; height:29px; color:#bbbbbb;"/>
+                <input type="text" name="content" id="inpContent" placeholder="Type content here to add" class="form-control"
+                        style="width:400px;"/>
+                <div class="input-group date">
+                    <input type="text" class="form-control" name="date" placeholder="date" style="width: 100px;"/>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+                <input type="text" name="time" placeholder="time" class="form-control" style="width: 100px;"/>
+                <select name="type" id="inpType" class="form-control">
+                    <option>other</option>
+                    <% types.forEach(function(type, index) {
+                        if (type === 'other') return; %>
+                    <option><%=type%></option>
+                    <% }); %>
+                </select>
+                <input type="submit" value="Add" class="btn btn-primary"/>
             </nobr>
         </form>
-        <div id="typeBox" style="display:none; width:105px;">
-            <% types.forEach(function(type, index) { %>
-                <li><%= type %></li>
-            <% }); %>
-        </div>
         <!-- add time slice finish -->
     </div>
 
 	<!-- main area start -->
-    <div style="width:800px; text-align:left;">
+    <div class="main-content">
 
         <% if (locals.keyword) { %>
-        <p><strong>Search results for "<%=keyword%>"</strong></p>
+        <p style="color:gray;"><strong>Search results for "<%=keyword%>"</strong></p>
         <% } %>
         <% if (slices.length==0) { %>
-        <p><strong>No slices.</strong></p>
+        <p style="color:gray;"><strong>No slices.</strong></p>
         <% } else { %>
         <p style="color:gray;"><%=slices.length%> slices</p>
         <% } %>
@@ -49,14 +50,12 @@
             <% }); %>
         </div>
 
-        <table border="0" cellspacing="0" cellpadding="0" width="800" class="normaltext">
-        <tr><td colspan="2">
-            <!-- timeline blocks-->
-        </td></tr>
-        <tr height="20"><td colspan="2"></td></tr>
+        <div style="clear: both; height: 20px;"></div>
+
+        <table class="table slice_items">
         <% slices.forEach(function(slice, index) { %>
         <tr title="<%- slice.type %>">
-            <td style="width:5px;" rowspan="2" class="slice_<%- slice.type %>" onclick="removeSlice('<%- slice.id %>');"></td>
+            <td rowspan="2" class="typeline slice_<%- slice.type %>" onclick="removeSlice('<%- slice.id %>');"></td>
             <td class="slice_time"><%= slice.timeText() %></td>
         </tr>
         <tr title="<%= slice.type %>">

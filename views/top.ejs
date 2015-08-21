@@ -2,27 +2,47 @@
 <html>
 <head>
 	<title>Time Machine</title>
-	<link href="stylesheets/time.css" rel="stylesheet" type="text/css">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-datepicker3.min.css" rel="stylesheet">
+    <link href="css/time.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
 </head>
 <body class="normaltext" topmargin="0">
 
-<div id="topBar">
-    <div style="float:left; font-size:30px; padding:8px 0px 0px 20px; font-family:'Helvetica'; width:240px;">
-        <span style="font-size:30px;"><a href="home">Time Machine</a></span>
-        <span style="font-size:16px;">.js</span>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="home" class="navbar-brand" style="font-size:30px;">Time Machine</a>
+        </div>
+        <div id="navbar" class="navbar-inner">
+            <ul class="nav nav-center">
+                <li id="now"></li>
+            </ul>
+            <% if (user != null) { %>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown navbar-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=user.name%><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="logout">Logout</a></li>
+                    </ul>
+                </li>
+                <form action="search" method="get" class="navbar-form navbar-right">
+                    <input type="text" name="key" style="width:170px" class="form-control" placeholder="Search..."/>
+                </form>
+            </ul>
+            <% } %>
+        </div><!--/.nav-collapse -->
     </div>
-    <div style="float:right; padding:10px 10px 0px 0px; text-align:right; width:240px;">
-        <% if (user!=null && slices!=null) { %>
-        Hi, <%=user.name%> | <a href="logout">Logout</a>
-        <form action="search" method="get">
-            <input type="text" name="key" style="width:170px" class="flatInput"/>
-        </form>
-    <% } %>
-    </div>
-    <% if (user) { %>
-    <div id="divNow">
-    </div>
-    <% } %>
-</div>
+</nav>
 
-<div id="content" style="margin-top: 70px; text-align:center;">
+<div class="container">
+    <div class="jumbotron main">
+
