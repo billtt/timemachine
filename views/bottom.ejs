@@ -7,12 +7,14 @@
     <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-year-calendar.min.js"></script>
 
+    <% if (locals.start != null) { %>
     <script type="text/javascript">
         var startDate = '<%= start %>';
         var endDate = '<%= end %>';
     </script>
 
     <script type="text/javascript" src="js/calendar.js"></script>
+    <% } %>
 
 </div>
 
