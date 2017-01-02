@@ -81,6 +81,16 @@
     margin-top: 30px;
 }
 
+#ycalendar {
+    max-width: 1300px;
+    margin-top: 75px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    display: block;
+    overflow: hidden;
+}
+
 .btn-twodigits {
     width: 36px;
     height: 30px;
@@ -92,7 +102,7 @@
 }
 
 .main-content {
-    margin-top: 25px;
+    margin-top: 0px;
 }
 
 .slice_block div {

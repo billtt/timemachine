@@ -28,7 +28,14 @@ Slice.prototype.timeText = function timeText() {
     this.time.getHours(), this.time.getMinutes());
 };
 
-Slice.getList = function getList(user, year, month, day, period, callback) {
+/**
+ *
+ * @param user
+ * @param start {Date}
+ * @param end {Date}
+ * @param callback
+ */
+Slice.getDateRangeList = function getRangeList(user, start, end, callback) {
   mongodb.open(function(err, db) {
     if (err) {
       return callback(err);
@@ -39,8 +46,8 @@ Slice.getList = function getList(user, year, month, day, period, callback) {
         return callback(err);
       }
       var crit = { user: user };
-      var timePeriod = util.getTimePeriod(year, month, day, period);
-      crit.time = {$gte: timePeriod.start, $lt: timePeriod.end};
+      end = new Date(end.getTime() + 86400000);
+      crit.time = {$gte: start, $lt: end};
       collection.find(crit).toArray(function(err, docs) {
         db.close();
         if (docs) {
@@ -55,18 +62,6 @@ Slice.getList = function getList(user, year, month, day, period, callback) {
       });
     });
   });
-};
-
-Slice.getDayList = function getDayList(user, year, month, day, callback) {
-  return Slice.getList(user, year, month, day, "day", callback);
-};
-
-Slice.getMonthList = function getMonthList(user, year, month, callback) {
-  return Slice.getList(user, year, month, 1, "month", callback);
-};
-
-Slice.getYearList = function getYearList(user, year, callback) {
-  return Slice.getList(user, year, 0, 1, "year", callback);
 };
 
 Slice.prototype.save = function save(callback) {

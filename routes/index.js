@@ -4,7 +4,6 @@
 
 var User = require('../models/user');
 var Slice = require('../models/slice');
-var Day = require('../models/day');
 var uuid = require('node-uuid');
 var util = require('../util');
 
@@ -72,14 +71,15 @@ function route(app) {
       return res.redirect('index');
     }
     var today = new Date();
-    Slice.getDayList(user.name, today.getFullYear(), today.getMonth()+1, today.getDate(), function(err, slices) {
+    today.setHours(0, 0, 0, 0);
+    Slice.getDateRangeList(user.name, today, today, function(err, slices) {
       if (!slices) {
         slices = [];
       }
-      var day = new Day(today);
+      today = util.simpleDateText(today);
       res.locals.slices = slices;
-      res.locals.day = day;
-      res.locals.today = day;
+      res.locals.start = today;
+      res.locals.end = today;
       res.render('home');
     });
   });
@@ -89,20 +89,15 @@ function route(app) {
     if (!user) {
       return res.redirect('index');
     }
-    var year = req.query.year;
-    var month = req.query.month;
-    var day = req.query.day;
-    var period = req.query.period;
-    if (!day) {
-      day = 1;
-    }
-    Slice.getList(user.name, year, month, day, period, function(err, slices) {
+    var start = req.query.start;
+    var end = req.query.end;
+    Slice.getDateRangeList(user.name, new Date(start), new Date(end), function(err, slices) {
       if (!slices) {
         slices = [];
       }
       res.locals.slices = slices;
-      res.locals.day = new Day(new Date(year, month-1, day), period);
-      res.locals.today = new Day(new Date());
+      res.locals.start = start;
+      res.locals.end = end;
       res.render('home');
     });
   });
@@ -117,10 +112,10 @@ function route(app) {
       if (!slices) {
         slices = [];
       }
-      var day = new Day(new Date());
+      today = util.simpleDateText(new Date());
       res.locals.slices = slices;
-      res.locals.day = day;
-      res.locals.today = day;
+      res.locals.start = today;
+      res.locals.end = today;
       res.locals.keyword = key;
       res.render('home');
     });
