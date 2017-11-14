@@ -8,6 +8,15 @@
     <link href="css/bootstrap-year-calendar.min.css" rel="stylesheet">
     <link href="css/time.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery.min.js"></script>
+
+    <% if (!locals.travel) { %>
+    <style type="text/css">
+        .months-container {
+            display: none !important;
+        }
+    </style>
+    <% } %>
+
 </head>
 <body class="normaltext" topmargin="0">
 

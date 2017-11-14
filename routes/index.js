@@ -80,6 +80,7 @@ function route(app) {
       res.locals.slices = slices;
       res.locals.start = today;
       res.locals.end = today;
+      res.locals.travel = false;
       res.render('home');
     });
   });
@@ -98,6 +99,7 @@ function route(app) {
       res.locals.slices = slices;
       res.locals.start = start;
       res.locals.end = end;
+      res.locals.travel = true;
       res.render('home');
     });
   });

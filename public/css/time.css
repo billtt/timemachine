@@ -155,3 +155,8 @@
 .slice_other {
     background-color: #aaaaaa;
 }
+
+div.jumbotron.main {
+    margin-top: 10px;
+    padding-top: 10px;
+}

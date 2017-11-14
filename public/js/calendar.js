@@ -10,6 +10,10 @@ function onSelectedRange(e) {
     window.location.href = 'travel?start=' + start + '&end=' + end;
 }
 
+function onYearTitleClick() {
+    $('.months-container')[0].style.setProperty('display', 'block', 'important');
+}
+
 $(function() {
     $('#ycalendar').calendar({
         enableRangeSelection: true,
@@ -20,7 +24,10 @@ $(function() {
             name: 'Selected Date',
             startDate: new Date(startDate),
             endDate: new Date(endDate)
-        }]
+        }],
+        renderEnd: function() {
+            $('th.year-title').click(onYearTitleClick);
+        }
     });
     $('#ycalendar').data('calendar').setYear(new Date(startDate).getFullYear());
 });
