@@ -38,11 +38,50 @@ function initDatePicker() {
     });
 }
 
+function isPrivateMode() {
+	return (localStorage.getItem('privateMode') || 'false') == 'true';
+}
+
+function togglePrivateMode() {
+	var privateMode = !isPrivateMode();
+	localStorage.setItem('privateMode', privateMode);
+	updatePrivateModeView();
+}
+
+function updatePrivateModeView() {
+	if (isPrivateMode()) {
+		$('.slice_content').addClass('blur');
+		$('#btPrivateToggle').addClass('fa-eye-slash');
+		$('#btPrivateToggle').removeClass('fa-eye');
+	} else {
+		$('.slice_content').removeClass('blur');
+		$('#btPrivateToggle').addClass('fa-eye');
+		$('#btPrivateToggle').removeClass('fa-eye-slash');
+	}
+}
+
+function onSliceEnter() {
+	if (isPrivateMode()) {
+		$(this).removeClass('blur');
+	}
+}
+
+function onSliceOut() {
+	if (isPrivateMode()) {
+		$(this).addClass('blur');
+	}
+}
+
 $(function(){
 
-  $("#inpContent").keyup(onContentChange);
-  initDatePicker();
+	$("#inpContent").keyup(onContentChange);
+	initDatePicker();
 
-  setInterval(tick, 1000);
-  tick();
+	setInterval(tick, 1000);
+	tick();
+
+	$('#btPrivateToggle').click(togglePrivateMode);
+	$('.slice_content').mouseenter(onSliceEnter).mouseleave(onSliceOut);
+	updatePrivateModeView();
+	$('.slice_items').removeClass('hidden');
 });

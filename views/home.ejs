@@ -54,7 +54,7 @@
 
         <div style="clear: both; height: 20px;"></div>
 
-        <table class="table slice_items">
+        <table class="table slice_items hidden">
         <% slices.forEach(function(slice, index) { %>
         <tr title="<%- slice.type %>">
             <td rowspan="2" class="typeline slice_<%- slice.type %>" onclick="removeSlice('<%- slice.id %>');"></td>

@@ -6,6 +6,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-datepicker3.min.css" rel="stylesheet">
     <link href="css/bootstrap-year-calendar.min.css" rel="stylesheet">
+	<link href="css/font-awesome.css" rel="stylesheet">
     <link href="css/time.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery.min.js"></script>
 
@@ -38,6 +39,7 @@
             </ul>
             <% if (user != null) { %>
             <ul class="nav navbar-nav navbar-right">
+				<li id="btPrivateToggle" class="navbar-right fa" aria-hidden="true"></li>
                 <li class="dropdown navbar-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=user.name%><span class="caret"></span></a>
                     <ul class="dropdown-menu">
