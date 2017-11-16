@@ -161,11 +161,6 @@ div.jumbotron.main {
     padding-top: 10px;
 }
 
-.blur {
-    color: transparent;
-    text-shadow: 0 0 8px rgba(0,0,0,0.75);
-}
-
 .hidden {
     display: none;
 }

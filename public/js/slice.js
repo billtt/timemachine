@@ -1,3 +1,6 @@
+
+var privateMappings = {};
+
 function removeSlice(id) {
 	if (confirm("Sure to delete?")) {
 		$.getJSON("remove", {id:id}, function(data) {
@@ -48,13 +51,31 @@ function togglePrivateMode() {
 	updatePrivateModeView();
 }
 
+function encryptSlices() {
+	$('.slice_content').each(function() {
+		var id = $(this).attr('sliceId');
+		var content = $(this).text();
+		if (!privateMappings[id]) {
+			privateMappings[id] = content;
+		}
+		$(this).text(simpleEncrypt(content));
+	});
+}
+
+function decryptSlices() {
+	$('.slice_content').each(function() {
+		var id = $(this).attr('sliceId');
+		$(this).text(privateMappings[id]);
+	});
+}
+
 function updatePrivateModeView() {
 	if (isPrivateMode()) {
-		$('.slice_content').addClass('blur');
+		encryptSlices();
 		$('#btPrivateToggle').addClass('fa-eye-slash');
 		$('#btPrivateToggle').removeClass('fa-eye');
 	} else {
-		$('.slice_content').removeClass('blur');
+		decryptSlices();
 		$('#btPrivateToggle').addClass('fa-eye');
 		$('#btPrivateToggle').removeClass('fa-eye-slash');
 	}
@@ -62,13 +83,11 @@ function updatePrivateModeView() {
 
 function onSliceEnter() {
 	if (isPrivateMode()) {
-		$(this).removeClass('blur');
 	}
 }
 
 function onSliceOut() {
 	if (isPrivateMode()) {
-		$(this).addClass('blur');
 	}
 }
 

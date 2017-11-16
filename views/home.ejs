@@ -61,7 +61,7 @@
             <td class="slice_time"><%= slice.timeText() %></td>
         </tr>
         <tr title="<%= slice.type %>">
-            <td class="slice_content"><%= slice.content %></td>
+            <td class="slice_content" sliceId="<%- slice.id %>"><%= slice.content %></td>
         </tr>
         <tr height="10"><td colspan="2"></td></tr>
         <% }); %>
