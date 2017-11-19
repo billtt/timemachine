@@ -17,11 +17,9 @@ String.prototype.shuffle = function () {
 
 function simpleEncrypt(str) {
 	var chars = str.split('');
-	var k = Math.ceil(Math.random() * 2);
+	const enchar = '✕';
 	for (var i=0; i<chars.length; i++) {
-		if ((i + k) % 2) {
-			chars[i] = String.fromCharCode(str.charCodeAt(i) + 2);
-		}
+		chars[i] = enchar;
 	}
-	return chars.join('');
+	return chars.join(' ');
 }

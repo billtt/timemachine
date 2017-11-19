@@ -69,6 +69,16 @@ function decryptSlices() {
 	});
 }
 
+function onKeyPress(e) {
+	var tag = e.target.tagName.toLowerCase();
+	var key = e.which;
+	if ( tag != 'input' && tag != 'textarea') {
+		if (key === 81 || key === 113) { // Q or q
+			togglePrivateMode();
+		}
+	}
+}
+
 function updatePrivateModeView() {
 	if (isPrivateMode()) {
 		encryptSlices();
@@ -103,4 +113,5 @@ $(function(){
 	$('.slice_content').mouseenter(onSliceEnter).mouseleave(onSliceOut);
 	updatePrivateModeView();
 	$('.slice_items').removeClass('hidden');
+	$(document).keypress(onKeyPress);
 });
