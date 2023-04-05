@@ -8,9 +8,10 @@
 
 var mongodb = require('./db');
 
-function User(name, key) {
+function User(name, key, token) {
   this.name = name;
   this.key = key;
+  this.token = token;
 }
 
 module.exports = User;
@@ -18,7 +19,8 @@ module.exports = User;
 User.prototype.save = function save(callback) {
   var data = {
     name: this.name,
-    key: this.key
+    key: this.key,
+    token: this.token
   };
   mongodb.open(function (err, db) {
     if (err) {
@@ -43,7 +45,7 @@ User.prototype.save = function save(callback) {
   });
 };
 
-User.get = function get(name, callback) {
+function getOneBy(prop, value, callback) {
   mongodb.open(function (err, db) {
     if (err) {
       return callback(err);
@@ -53,14 +55,46 @@ User.get = function get(name, callback) {
         db.close();
         return callback(err);
       }
-      collection.findOne({name: name}, function (err, doc) {
+      let query = {};
+      query[prop] = value;
+      collection.findOne(query, function (err, doc) {
         db.close();
         if (doc) {
-          var user = new User(doc.name, doc.key);
+          var user = new User(doc.name, doc.key, doc.token ? doc.token : '');
           callback(err, user);
         } else {
           callback(err, null);
         }
+      });
+    });
+  });
+};
+
+User.get = function get(name, callback) {
+    return getOneBy('name', name, callback);
+}
+
+User.getByToken = function get(token, callback) {
+    return getOneBy('token', token, callback);
+};
+
+User.prototype.updateToken = function updateToken(token, callback) {
+  let _this = this;
+  mongodb.open(function (err, db) {
+    if (err) {
+      return callback(err);
+    }
+    db.collection('users', function (err, collection) {
+      if (err) {
+        db.close();
+        return callback(err);
+      }
+      collection.update({name: _this.name}, {$set: {token: token}}, function (err, data) {
+        if (!err) {
+          _this.token = token;
+        }
+        db.close();
+        return callback(err);
       });
     });
   });

@@ -8,6 +8,8 @@
 
 var crypto = require('crypto');
 var settings = require('./settings');
+var uuidv5 = require('uuid').v5;
+var settings = require('./settings');
 
 /**
  *
@@ -30,3 +32,7 @@ exports.encodePassword = function encodePassword(passwd) {
 exports.simpleDateText = function simpleDateText(date) {
   return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 };
+
+exports.genUserToken = function genUserToken(username) {
+  return uuidv5(username, settings.tokenNamespace);
+}
