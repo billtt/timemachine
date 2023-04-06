@@ -18,9 +18,9 @@ function sendJson(res, data, code) {
     return null;
 }
 
-router.get('/login', function(req, res) {
-    let name = req.query.name;
-    let passwd = req.query.password;
+router.post('/login', function(req, res) {
+    let name = req.body.username;
+    let passwd = req.body.password;
     passwd = util.encodePassword(passwd);
     User.get(name, function(err, user) {
         if (!user || user.key != passwd) {
@@ -42,14 +42,14 @@ router.get('/login', function(req, res) {
     });
 });
 
-router.get('/list', function(req, res) {
-    let token = req.query.token;
+router.post('/list', function(req, res) {
+    let token = req.body.token;
     User.getByToken(token, function(err, user) {
         if (err || user == null) {
             console.log(err);
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let date = new Date(req.query.date);
+        let date = new Date(req.body.date);
         Slice.getDateRangeList(user.name, date, date, function(err, slices) {
             if (!slices) {
                 slices = [];
@@ -59,14 +59,14 @@ router.get('/list', function(req, res) {
     });
 });
 
-router.get('/search', function(req, res) {
-    let token = req.query.token;
+router.post('/search', function(req, res) {
+    let token = req.body.token;
     User.getByToken(token, function(err, user) {
         if (err || user == null) {
             console.log(err);
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let search = req.query.search;
+        let search = req.body.search;
         Slice.search(user.name, search, function(err, slices) {
             if (!slices) {
                 slices = [];
@@ -83,26 +83,26 @@ router.post('/add', function(req, res) {
             console.log(err);
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let date = req.body.date;
+        let date = new Date(req.body.date);
         let slice = new Slice(req.body.content, 'other', user.name, date);
         slice.save((err) => {
             if (err) {
                 console.log(err);
                 return sendJson(res, {}, CODE_ERROR_GENERAL);
             }
-            return sendJson(res, {slice: slice}, CODE_OK);
+            return sendJson(res, {}, CODE_OK);
         });
     });
 });
 
-router.get('/remove', function(req, res) {
+router.post('/remove', function(req, res) {
     let token = req.body.token;
     User.getByToken(token, function(err, user) {
         if (err || user == null) {
             console.log(err);
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let id = req.query.id;
+        let id = req.body.id;
         Slice.remove(user.name, id, (err) => {
             if (err) {
                 console.log(err);
