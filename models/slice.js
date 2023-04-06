@@ -53,7 +53,7 @@ Slice.getDateRangeList = function getRangeList(user, start, end, callback) {
         if (docs) {
           var list = [];
           docs.forEach(function(doc, index) {
-            list.push(new Slice(doc.content, doc.type, doc.user, doc.time, doc._id));
+            list.unshift(new Slice(doc.content, doc.type, doc.user, doc.time, doc._id));
           });
           return callback(null, list);
         } else {
