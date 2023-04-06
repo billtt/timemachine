@@ -113,4 +113,24 @@ router.post('/remove', function(req, res) {
     });
 });
 
+router.post('/update', function(req, res) {
+    let token = req.body.token;
+    User.getByToken(token, function(err, user) {
+        if (err || user == null) {
+            console.log(err);
+            return sendJson(res, {}, CODE_ERROR_INVALID_USER);
+        }
+        let id = req.body.id;
+        let content = req.body.content;
+        let date = new Date(req.body.date);
+        Slice.update(id, content, date, (err) => {
+            if (err) {
+                console.log(err);
+                return sendJson(res, {}, CODE_ERROR_GENERAL);
+            }
+            return sendJson(res, {}, CODE_OK);
+        });
+    });
+});
+
 module.exports = router;

@@ -64,6 +64,32 @@ Slice.getDateRangeList = function getRangeList(user, start, end, callback) {
   });
 };
 
+Slice.update = function update(id, content, time, callback) {
+  var data = {
+    time: time,
+    content: content,
+  };
+  mongodb.open(function(err, db) {
+    if (err) {
+      return callback(err);
+    }
+    db.collection('slices', function(err, collection) {
+      if (err) {
+        db.close();
+        return callback(err);
+      }
+      collection.update(
+          {_id: bson.ObjectID(id)},
+          {$set: data},
+          function(err, data) {
+            db.close();
+            return callback(err, data);
+          }
+      );
+    });
+  });
+};
+
 Slice.prototype.save = function save(callback) {
   var data = {
     user: this.user,
