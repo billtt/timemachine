@@ -2,7 +2,6 @@
 	<% include top %>
 
     <script type="text/javascript" src="js/sprintf.min.js"></script>
-    <script type="text/javascript" src="js/types.js"></script>
     <script type="text/javascript" src="js/slice.js"></script>
 
     <!-- timeline -->
@@ -21,13 +20,7 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                 </div>
                 <input type="text" name="time" placeholder="time" class="form-control" style="width: 100px;"/>
-                <select name="type" id="inpType" class="form-control">
-                    <option>other</option>
-                    <% types.forEach(function(type, index) {
-                        if (type === 'other') return; %>
-                    <option><%=type%></option>
-                    <% }); %>
-                </select>
+                <input type="hidden" name="type" value="other"/>
                 <input type="submit" value="Add" class="btn btn-primary"/>
             </nobr>
         </form>
@@ -45,12 +38,6 @@
         <% } else { %>
         <p style="color:gray;"><%=slices.length%> slices</p>
         <% } %>
-
-        <div class="slice_block">
-            <% slices.forEach(function(slice, index) { %>
-            <div class="slice_<%- slice.type %>"></div>
-            <% }); %>
-        </div>
 
         <div style="clear: both; height: 20px;"></div>
 

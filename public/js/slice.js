@@ -9,19 +9,6 @@ function removeSlice(id) {
 	}
 }
 
-function onContentChange() {
-  var inpType = $('#inpType');
-  var content = $("#inpContent").val();
-  for (var type in _types) {
-    _types[type].forEach(function(kw) {
-      if (content.indexOf(kw)>=0) {
-        inpType.val(type);
-        return;
-      }
-    });
-  }
-}
-
 function tick() {
   var now = new Date();
   var str = sprintf('<span style="font-size:36px;">%04d</span>&middot;%02d&middot;%02d ' +
@@ -102,8 +89,6 @@ function onSliceOut() {
 }
 
 $(function(){
-
-	$("#inpContent").keyup(onContentChange);
 	initDatePicker();
 
 	setInterval(tick, 1000);
