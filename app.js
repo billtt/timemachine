@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('express-error-handler');
+var cors = require('cors');
 
 var webRouter = require('./routes/web');
 var apiRouter = require('./routes/api');
@@ -20,12 +21,13 @@ var dhelper = require('./dhelper');
 
 var app = express();
 
-var MongoStore = require('connect-mongo')(session);
+var MongoStore = require('connect-mongo');
 var settings = require('./settings');
 
 // all environments
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -33,8 +35,8 @@ app.use(methodOverride());
 app.use(cookieParser());
 app.use(session({
   secret: settings.cookieSecret,
-  store: new MongoStore({
-    url: settings.dbUrl
+  store: MongoStore.create({
+    mongoUrl: settings.dbUrl
   })
 }));
 app.use(flash());

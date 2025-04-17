@@ -6,9 +6,19 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var settings = require('../settings');
-var MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
+const settings = require('../settings');
 
-exports.open = function(callback) {
-    MongoClient.connect(settings.dbUrl, callback);
-};
+let client;
+
+async function open() {
+    if (!client || !client.isConnected?.()) {
+        client = await MongoClient.connect(settings.dbUrl, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+    }
+    return client.db(settings.dbName);
+}
+
+module.exports = { open };

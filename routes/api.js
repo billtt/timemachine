@@ -2,10 +2,10 @@
  * API routes
  */
 
-var User = require('../models/user');
-var Slice = require('../models/slice');
-var util = require('../util');
-var router = require('express').Router();
+const User = require('../models/user');
+const Slice = require('../models/slice');
+const util = require('../util');
+const router = require('express').Router();
 
 const CODE_OK = 0;
 const CODE_ERROR_GENERAL = 1;
@@ -18,119 +18,109 @@ function sendJson(res, data, code) {
     return null;
 }
 
-router.post('/login', function(req, res) {
-    let name = req.body.username;
-    let passwd = req.body.password;
-    passwd = util.encodePassword(passwd);
-    User.get(name, function(err, user) {
-        if (!user || user.key != passwd) {
+router.post('/login', async (req, res) => {
+    try {
+        const name = req.body.username;
+        const passwd = util.encodePassword(req.body.password);
+        const user = await User.get(name);
+
+        if (!user || user.key !== passwd) {
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        if (user.token == null || user.token == '') {
-            let token = util.genUserToken(name);
-            user.updateToken(token, function(err) {
-                if (err) {
-                    console.log(err);
-                    return sendJson(res, {}, CODE_ERROR_GENERAL);
-                } else {
-                    return sendJson(res, {token: user.token}, CODE_OK);
-                }
-            });
-        } else {
-            return sendJson(res, {token: user.token}, CODE_OK);
+
+        if (!user.token) {
+            const token = util.genUserToken(name);
+            await user.updateToken(token);
         }
-    });
+
+        return sendJson(res, { token: user.token }, CODE_OK);
+    } catch (err) {
+        console.log(err);
+        return sendJson(res, {}, CODE_ERROR_GENERAL);
+    }
 });
 
-router.post('/list', function(req, res) {
-    let token = req.body.token;
-    User.getByToken(token, function(err, user) {
-        if (err || user == null) {
-            console.log(err);
+router.post('/list', async (req, res) => {
+    try {
+        const token = req.body.token;
+        const user = await User.getByToken(token);
+        if (!user) {
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let date = new Date(req.body.date);
-        Slice.getDateRangeList(user.name, date, date, function(err, slices) {
-            if (!slices) {
-                slices = [];
-            }
-            return sendJson(res, {slices: slices}, CODE_OK);
-        });
-    });
+        const date = new Date(req.body.date);
+        const slices = await Slice.getDateRangeList(user.name, date, date);
+        return sendJson(res, { slices: slices || [] }, CODE_OK);
+    } catch (err) {
+        console.log(err);
+        return sendJson(res, {}, CODE_ERROR_GENERAL);
+    }
 });
 
-router.post('/search', function(req, res) {
-    let token = req.body.token;
-    User.getByToken(token, function(err, user) {
-        if (err || user == null) {
-            console.log(err);
+router.post('/search', async (req, res) => {
+    try {
+        const token = req.body.token;
+        const user = await User.getByToken(token);
+        if (!user) {
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let search = req.body.search;
-        Slice.search(user.name, search, function(err, slices) {
-            if (!slices) {
-                slices = [];
-            }
-            return sendJson(res, {slices: slices}, CODE_OK);
-        });
-    });
+        const search = req.body.search;
+        const slices = await Slice.search(user.name, search);
+        return sendJson(res, { slices: slices || [] }, CODE_OK);
+    } catch (err) {
+        console.log(err);
+        return sendJson(res, {}, CODE_ERROR_GENERAL);
+    }
 });
 
-router.post('/add', function(req, res) {
-    let token = req.body.token;
-    User.getByToken(token, function(err, user) {
-        if (err || user == null) {
-            console.log(err);
+router.post('/add', async (req, res) => {
+    try {
+        const token = req.body.token;
+        const user = await User.getByToken(token);
+        if (!user) {
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let date = new Date(req.body.date);
-        let slice = new Slice(req.body.content, 'other', user.name, date);
-        slice.save((err) => {
-            if (err) {
-                console.log(err);
-                return sendJson(res, {}, CODE_ERROR_GENERAL);
-            }
-            return sendJson(res, {}, CODE_OK);
-        });
-    });
+        const date = new Date(req.body.date);
+        const slice = new Slice(req.body.content, 'other', user.name, date);
+        await slice.save();
+        return sendJson(res, {}, CODE_OK);
+    } catch (err) {
+        console.log(err);
+        return sendJson(res, {}, CODE_ERROR_GENERAL);
+    }
 });
 
-router.post('/remove', function(req, res) {
-    let token = req.body.token;
-    User.getByToken(token, function(err, user) {
-        if (err || user == null) {
-            console.log(err);
+router.post('/remove', async (req, res) => {
+    try {
+        const token = req.body.token;
+        const user = await User.getByToken(token);
+        if (!user) {
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let id = req.body.id;
-        Slice.remove(user.name, id, (err) => {
-            if (err) {
-                console.log(err);
-                return sendJson(res, {}, CODE_ERROR_GENERAL);
-            }
-            return sendJson(res, {id: id}, CODE_OK);
-        });
-    });
+        const id = req.body.id;
+        await Slice.remove(user.name, id);
+        return sendJson(res, { id }, CODE_OK);
+    } catch (err) {
+        console.log(err);
+        return sendJson(res, {}, CODE_ERROR_GENERAL);
+    }
 });
 
-router.post('/update', function(req, res) {
-    let token = req.body.token;
-    User.getByToken(token, function(err, user) {
-        if (err || user == null) {
-            console.log(err);
+router.post('/update', async (req, res) => {
+    try {
+        const token = req.body.token;
+        const user = await User.getByToken(token);
+        if (!user) {
             return sendJson(res, {}, CODE_ERROR_INVALID_USER);
         }
-        let id = req.body.id;
-        let content = req.body.content;
-        let date = new Date(req.body.date);
-        Slice.update(id, content, date, (err) => {
-            if (err) {
-                console.log(err);
-                return sendJson(res, {}, CODE_ERROR_GENERAL);
-            }
-            return sendJson(res, {}, CODE_OK);
-        });
-    });
+        const id = req.body.id;
+        const content = req.body.content;
+        const date = new Date(req.body.date);
+        await Slice.update(id, content, date);
+        return sendJson(res, {}, CODE_OK);
+    } catch (err) {
+        console.log(err);
+        return sendJson(res, {}, CODE_ERROR_GENERAL);
+    }
 });
 
 module.exports = router;
