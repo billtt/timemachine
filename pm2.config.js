@@ -6,6 +6,7 @@ module.exports = {
         log_file: "./logs/time.log",
         restart_delay: 10000,
         env: {
+            PORT: 3001
         }
     }]
 }
