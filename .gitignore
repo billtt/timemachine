@@ -4,3 +4,4 @@ node_modules
 workspace.xml
 .idea
 time.js.iml
+.DS_Store
