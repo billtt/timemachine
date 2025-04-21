@@ -102,7 +102,7 @@ div.calendar {
 }
 
 .calendar .calendar-header .year-title:not(.year-neighbor):not(.year-neighbor2) {
-    border-bottom: 2px solid #ccc;
+    /* border-bottom: 2px solid #ccc; */
 }
 
 .calendar .calendar-header .year-neighbor {
