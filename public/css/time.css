@@ -78,12 +78,11 @@
 
 .main {
     background: none;
-    margin-top: 30px;
 }
 
 #ycalendar {
     max-width: 1300px;
-    margin-top: 75px;
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
     padding: 0;
@@ -157,8 +156,13 @@
 }
 
 div.jumbotron.main {
-    margin-top: 10px;
+    margin-top: auto;
     padding-top: 10px;
+}
+
+div.topPadding {
+    height: 50px;
+    width: 100%;
 }
 
 .hidden {
