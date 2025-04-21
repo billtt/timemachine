@@ -15,9 +15,11 @@ function onYearTitleClick() {
 }
 
 $(function() {
-    $('#ycalendar').calendar({
+    new Calendar('.calendar', {
         enableRangeSelection: true,
         roundRangeLimits: false,
+        maxDate: new Date(),
+        weekStart: 1,
         selectRange: onSelectedRange,
         dataSource: [{
             id: 0,
